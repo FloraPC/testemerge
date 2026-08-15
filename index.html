@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+  <meta name="theme-color" content="#E0245E">
+  <meta name="description" content="Jogo educativo de mesclagem sobre o sistema reprodutor feminino, desenvolvido para o MUDI-UEM.">
+  <meta name="color-scheme" content="light">
+
+  <title>Female Merge — Sistema Reprodutor Feminino</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Female Merge">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<a href="#app" class="skip-link">Pular para o conteúdo</a>
+
+<div id="app" role="application">
+
+  <!-- ==================================================================
+       TELA: SPLASH / INÍCIO
+  =================================================================== -->
+  <section id="screen-splash" class="screen active" aria-label="Tela inicial">
+    <div class="screen-inner splash-inner">
+      <header class="splash-header">
+        <p class="eyebrow">MUDI · UEM — Jogo educativo</p>
+        <h1 class="splash-title">FEMALE MERGE</h1>
+        <p class="splash-subtitle-sci">Sistema Reprodutor Feminino</p>
+        <p class="splash-tagline">Aprenda sobre o sistema reprodutor feminino através de um jogo de mesclagem.</p>
+        <p class="splash-record">Recorde atual: <strong id="splash-record">0000</strong></p>
+      </header>
+
+      <button id="btn-start-game" class="btn btn-primary btn-hero">INICIAR JOGO</button>
+
+      <nav class="splash-menu" aria-label="Menu principal">
+        <button id="btn-open-records" class="btn btn-menu">
+          <span class="btn-menu-icon" aria-hidden="true">🏆</span> Recordes
+        </button>
+        <button id="btn-open-accessibility" class="btn btn-menu">
+          <span class="btn-menu-icon" aria-hidden="true">⚙️</span> Acessibilidade
+        </button>
+        <button id="btn-open-howto" class="btn btn-menu">
+          <span class="btn-menu-icon" aria-hidden="true">❓</span> Como jogar
+        </button>
+        <button id="btn-open-about" class="btn btn-menu">
+          <span class="btn-menu-icon" aria-hidden="true">ℹ️</span> Sobre o MUDI-UEM
+        </button>
+      </nav>
+
+      <div class="life-arc" aria-hidden="true">
+        <div class="life-arc-item"><canvas id="arc-icon-0" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-1" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-2" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-3" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-4" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-5" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-6" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-7" class="life-arc-icon"></canvas></div>
+        <div class="life-arc-item"><canvas id="arc-icon-8" class="life-arc-icon"></canvas></div>
+      </div>
+      <p class="splash-footnote">Experiência com finalidade educativa — desenvolvida para o MUDI-UEM.</p>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       TELA: NOME DO JOGADOR
+  =================================================================== -->
+  <section id="screen-name" class="screen" aria-label="Identificação do jogador">
+    <div class="screen-inner centered-inner">
+      <h2 class="screen-title">Antes de começar…</h2>
+      <p class="screen-desc">Digite seu nome para registrar sua pontuação nos recordes.</p>
+      <label for="input-player-name" class="field-label">Seu nome</label>
+      <input id="input-player-name" class="text-input" type="text" maxlength="16" placeholder="Digite seu nome" autocomplete="off">
+      <button id="btn-name-continue" class="btn btn-primary">CONTINUAR</button>
+      <button id="btn-name-skip" class="btn btn-link">Agora não</button>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       TELA: RECORDES
+  =================================================================== -->
+  <section id="screen-records" class="screen" aria-label="Recordes">
+    <div class="screen-inner">
+      <h2 class="screen-title">🏆 Recordes</h2>
+      <ol id="records-list" class="records-list"></ol>
+      <button id="btn-records-back" class="btn btn-secondary">VOLTAR AO MENU</button>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       TELA: ACESSIBILIDADE
+  =================================================================== -->
+  <section id="screen-accessibility" class="screen" aria-label="Configurações de acessibilidade">
+    <div class="screen-inner">
+      <h2 class="screen-title">⚙️ Acessibilidade</h2>
+
+      <div class="setting-row">
+        <div>
+          <label for="toggle-contrast" class="setting-label">Alto contraste</label>
+          <p class="setting-help">Aumenta o contraste de cores para melhor leitura.</p>
+        </div>
+        <input type="checkbox" id="toggle-contrast" class="switch">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <label for="select-font-size" class="setting-label">Tamanho da fonte</label>
+          <p class="setting-help">Ajusta o tamanho dos textos em todo o jogo.</p>
+        </div>
+        <select id="select-font-size" class="select-input">
+          <option value="normal">Normal</option>
+          <option value="grande">Grande</option>
+          <option value="muito-grande">Muito grande</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <label for="toggle-reduce-motion" class="setting-label">Reduzir animações</label>
+          <p class="setting-help">Diminui movimentos, partículas e efeitos visuais.</p>
+        </div>
+        <input type="checkbox" id="toggle-reduce-motion" class="switch">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <label for="toggle-sound" class="setting-label">Som</label>
+          <p class="setting-help">Ativa ou desativa todos os sons do jogo.</p>
+        </div>
+        <input type="checkbox" id="toggle-sound" class="switch">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <label for="range-volume" class="setting-label">Volume</label>
+          <p class="setting-help">Ajusta o volume dos efeitos sonoros.</p>
+        </div>
+        <input type="range" id="range-volume" min="0" max="100" value="70" class="range-input">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <label for="toggle-vibration" class="setting-label">Vibração</label>
+          <p class="setting-help">Feedback tátil ao soltar e combinar objetos (se o dispositivo suportar).</p>
+        </div>
+        <input type="checkbox" id="toggle-vibration" class="switch">
+      </div>
+
+      <button id="btn-accessibility-back" class="btn btn-secondary">VOLTAR</button>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       TELA: SOBRE O MUDI-UEM
+  =================================================================== -->
+  <section id="screen-about" class="screen" aria-label="Sobre o jogo">
+    <div class="screen-inner">
+      <h2 class="screen-title">ℹ️ Sobre o jogo</h2>
+      <p class="about-text">Este jogo educativo foi desenvolvido para o MUDI-UEM como uma ferramenta interativa de divulgação científica e aprendizagem.</p>
+      <div class="about-placeholder">
+        <p>Espaço reservado para, futuramente:</p>
+        <ul>
+          <li>Logotipo oficial do MUDI-UEM</li>
+          <li>Créditos e autores</li>
+          <li>QR Code</li>
+          <li>Referências bibliográficas</li>
+        </ul>
+      </div>
+      <button id="btn-about-back" class="btn btn-secondary">VOLTAR</button>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       TELA: JOGO
+  =================================================================== -->
+  <section id="screen-game" class="screen" aria-label="Partida em andamento">
+    <div class="game-hud" role="toolbar" aria-label="Painel do jogo">
+      <div class="hud-block">
+        <span class="hud-label">Pontuação</span>
+        <span id="hud-score" class="hud-value">0000</span>
+      </div>
+      <div class="hud-block hud-next">
+        <span class="hud-label">Próximo</span>
+        <canvas id="hud-next-canvas" class="hud-next-canvas" aria-label="Próximo objeto"></canvas>
+      </div>
+      <div class="hud-block">
+        <span class="hud-label">Recorde</span>
+        <span id="hud-record" class="hud-value">0000</span>
+      </div>
+      <div class="hud-actions">
+        <button id="btn-hud-info" class="btn-icon" aria-label="Enciclopédia educativa">📖</button>
+        <button id="btn-hud-sound" class="btn-icon" aria-label="Alternar som">🔊</button>
+        <button id="btn-pause" class="btn-icon" aria-label="Pausar jogo">⏸️</button>
+      </div>
+    </div>
+
+    <div id="game-canvas-wrap" class="game-canvas-wrap">
+      <canvas id="game-canvas" tabindex="0" aria-label="Área de jogo — use as setas do teclado para mirar e espaço para soltar o objeto"></canvas>
+    </div>
+  </section>
+
+</div>
+
+<!-- ====================================================================
+     OVERLAYS
+===================================================================== -->
+
+<div id="overlay-tutorial" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Como jogar">
+  <div class="overlay-panel">
+    <h2 class="overlay-title">COMO JOGAR</h2>
+    <ol id="tutorial-steps" class="tutorial-list"></ol>
+    <button id="btn-tutorial-done" class="btn btn-primary">ENTENDI!</button>
+  </div>
+</div>
+
+<div id="overlay-pause" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Jogo pausado">
+  <div class="overlay-panel">
+    <h2 class="overlay-title">PAUSADO</h2>
+    <button id="btn-pause-continue" class="btn btn-primary">CONTINUAR</button>
+    <button id="btn-pause-restart" class="btn btn-secondary">REINICIAR</button>
+    <button id="btn-pause-settings" class="btn btn-secondary">CONFIGURAÇÕES</button>
+    <button id="btn-pause-menu" class="btn btn-tertiary">MENU PRINCIPAL</button>
+  </div>
+</div>
+
+<div id="overlay-gameover" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Fim de jogo">
+  <div class="overlay-panel">
+    <h2 class="overlay-title">FIM DE JOGO</h2>
+    <p id="gameover-record-badge" class="record-badge">🏆 NOVO RECORDE!</p>
+    <p class="gameover-stat">Pontuação: <strong id="gameover-score">0000</strong></p>
+    <p class="gameover-stat">Maior combinação: <strong id="gameover-highest">—</strong></p>
+    <div id="gameover-name-row" class="name-row">
+      <label for="input-gameover-name">Digite seu nome para registrar o recorde:</label>
+      <input id="input-gameover-name" class="text-input" type="text" maxlength="16" placeholder="Seu nome">
+    </div>
+    <button id="btn-gameover-again" class="btn btn-primary">JOGAR NOVAMENTE</button>
+    <button id="btn-gameover-records" class="btn btn-secondary">VER RECORDES</button>
+    <button id="btn-gameover-menu" class="btn btn-tertiary">MENU PRINCIPAL</button>
+  </div>
+</div>
+
+<div id="overlay-win" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Vitória">
+  <div class="overlay-panel overlay-panel-wide">
+    <h2 class="overlay-title">PARABÉNS! 🎉</h2>
+    <p class="overlay-desc">Você completou toda a sequência!</p>
+    <div id="win-chain" class="chain-row"></div>
+    <button id="btn-win-continue" class="btn btn-primary">CONTINUAR JOGANDO</button>
+    <button id="btn-win-finish" class="btn btn-secondary">FINALIZAR PARTIDA</button>
+  </div>
+</div>
+
+<div id="overlay-encyclopedia" class="overlay" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Enciclopédia educativa">
+  <div class="overlay-panel overlay-panel-wide">
+    <h2 class="overlay-title">📖 Enciclopédia</h2>
+    <div id="encyclopedia-grid" class="encyclopedia-grid"></div>
+    <div id="encyclopedia-detail" class="encyclopedia-detail">
+      <button id="btn-encyclopedia-back" class="btn-icon" aria-label="Voltar à lista">←</button>
+      <canvas id="encyclopedia-detail-icon" class="encyclopedia-detail-icon"></canvas>
+      <h3 id="encyclopedia-detail-title"></h3>
+      <p id="encyclopedia-detail-desc"></p>
+      <p id="encyclopedia-detail-fact" class="fact"></p>
+    </div>
+    <button id="btn-encyclopedia-close" class="btn btn-tertiary">FECHAR</button>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/accessibility.js"></script>
+<script src="js/render.js"></script>
+<script src="js/game.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
